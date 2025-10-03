@@ -3,155 +3,110 @@ html
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Joue le défi</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="intro-container">
     <h2>🎮 Défi d'amitié</h2>
-    <p id="intro-text"></p>
+    <p id="intro-text">Chargement...</p>
 
     <input type="text" id="friendName" placeholder="Ton prénom"><br><br>
 
-    <!-- 10 questions -->
-    <p>1. Sa couleur préférée?</p>
-    <select id="q1">
-      <option value="0">Bleu</option>
-      <option value="1">Rouge</option>
-      <option value="2">Vert</option>
-      <option value="3">Noir</option>
-    </select>
+    <div id="questions">
+      <p>1. Sa couleur préférée?</p>
+      <select id="q1">
+        <option value="0">Bleu</option>
+        <option value="1">Rouge</option>
+        <option value="2">Vert</option>
+        <option value="3">Noir</option>
+      </select>
 
-    <p>2. Son plat préféré?</p>
-    <select id="q2">
-      <option value="0">Pizza</option>
-      <option value="1">Sushi</option>
-      <option value="2">Spaghetti</option>
-      <option value="3">Fritay</option>
-    </select>
+      <p>2. Son plat préféré?</p>
+      <select id="q2">
+        <option value="0">Pizza</option>
+        <option value="1">Sushi</option>
+        <option value="2">Spaghetti</option>
+        <option value="3">Fritay</option>
+      </select>
 
-    <p>3. Son animal préféré?</p>
-    <select id="q3">
-      <option value="0">Chat</option>
-      <option value="1">Chien</option>
-      <option value="2">Oiseau</option>
-      <option value="3">Lapin</option>
-    </select>
+      <p>3. Son animal préféré?</p>
+      <select id="q3">
+        <option value="0">Chat</option>
+        <option value="1">Chien</option>
+        <option value="2">Oiseau</option>
+        <option value="3">Lapin</option>
+      </select>
 
-    <p>4. Son style de musique?</p>
-    <select id="q4">
-      <option value="0">Rap</option>
-      <option value="1">Kompa</option>
-      <option value="2">Jazz</option>
-      <option value="3">Afrobeat</option>
-    </select>
+      <p>4. Son style de musique?</p>
+      <select id="q4">
+        <option value="0">Rap</option>
+        <option value="1">Kompa</option>
+        <option value="2">Jazz</option>
+        <option value="3">Afrobeat</option>
+      </select>
 
-    <p>5. Son sport préféré?</p>
-    <select id="q5">
-      <option value="0">Football</option>
-      <option value="1">Basketball</option>
-      <option value="2">Natation</option>
-      <option value="3">Tennis</option>
-    </select>
+      <p>5. Son sport préféré?</p>
+      <select id="q5">
+        <option value="0">Football</option>
+        <option value="1">Basketball</option>
+        <option value="2">Natation</option>
+        <option value="3">Tennis</option>
+      </select>
 
-    <p>6. Sa boisson préférée?</p>
-    <select id="q6">
-      <option value="0">Coca</option>
-      <option value="1">Jus naturel</option>
-      <option value="2">Café</option>
-      <option value="3">Thé</option>
-    </select>
+      <p>6. Sa boisson préférée?</p>
+      <select id="q6">
+        <option value="0">Coca</option>
+        <option value="1">Jus naturel</option>
+        <option value="2">Café</option>
+        <option value="3">Thé</option>
+      </select>
 
-    <p>7. Son genre de film préféré?</p>
-    <select id="q7">
-      <option value="0">Action</option>
-      <option value="1">Comédie</option>
-      <option value="2">Romance</option>
-      <option value="3">Horreur</option>
-    </select>
+      <p>7. Son genre de film préféré?</p>
+      <select id="q7">
+        <option value="0">Action</option>
+        <option value="1">Comédie</option>
+        <option value="2">Romance</option>
+        <option value="3">Horreur</option>
+      </select>
 
-    <p>8. Sa saison préférée?</p>
-    <select id="q8">
-      <option value="0">Été</option>
-      <option value="1">Hiver</option>
-      <option value="2">Printemps</option>
-      <option value="3">Automne</option>
-    </select>
+      <p>8. Sa saison préférée?</p>
+      <select id="q8">
+        <option value="0">Été</option>
+        <option value="1">Hiver</option>
+        <option value="2">Printemps</option>
+        <option value="3">Automne</option>
+      </select>
 
-    <p>9. Son passe-temps favori?</p>
-    <select id="q9">
-      <option value="0">Lire</option>
-      <option value="1">Danser</option>
-      <option value="2">Jeux vidéo</option>
-      <option value="3">Voyager</option>
-    </select>
+      <p>9. Son passe-temps favori?</p>
+      <select id="q9">
+        <option value="0">Lire</option>
+        <option value="1">Danser</option>
+        <option value="2">Jeux vidéo</option>
+        <option value="3">Voyager</option>
+      </select>
 
-    <p>10. Son réseau social préféré?</p>
-    <select id="q10">
-      <option value="0">Instagram</option>
-      <option value="1">TikTok</option>
-      <option value="2">Facebook</option>
-      <option value="3">Twitter</option>
-    </select>
+      <p>10. Son réseau social préféré?</p>
+      <select id="q10">
+        <option value="0">Instagram</option>
+        <option value="1">TikTok</option>
+        <option value="2">Facebook</option>
+        <option value="3">Twitter</option>
+      </select>
+    </div>
 
-    <br><br>
+    <br>
     <button onclick="calculateScore()">Voir mon score</button>
     <canvas id="scoreChart" width="200" height="100" style="margin-top:20px;"></canvas>
     <div id="result" style="margin-top:20px;"></div>
+
+    <footer>
+      <p><a href="index.html">⬅ Retour à l'accueil</a></p>
+    </footer>
   </div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const user = params.get("user");
-    const correctAnswers = params.get("answers")?.split(",").map(Number);
-    document.getElementById("intro-text").innerText = `Que sais-tu de ${user}? Réponds aux 10 questions ci-dessous!`;
-
-    function calculateScore() {
-      const friendName = document.getElementById("friendName").value.trim();
-      if (!friendName) return alert("Entre ton prénom!");
-
-      const guesses = [];
-      for (let i = 1; i <= 10; i++) {
-        guesses.push(+document.getElementById("q" + i).value);
-}
-
-      let score = guesses.filter((g, i) => g === correctAnswers[i]).length;
-
-      // Sove repons zanmi an lokalman
-      const previous = JSON.parse(localStorage.getItem("scores")) || [];
-      previous.push({ name: friendName, score: score});
-localStorage.setItem("scores", JSON.stringify(previous));
-
-      // Afiche rezilta ak bouton pou kreye pwòp defi
-      let resultHTML = `
-        <h3>${user}, ton ami ${friendName} a obtenu ${score}/10 points!</h3>
-        <p><a href="create.html">🎯 Crée ton propre défi maintenant</a></p>
-        <p><a href="play.html?user=${user}&answers=${correctAnswers.join(',')}">🔁 Rejouer</a></p>
-      `;
-
-      // Afiche klasman lokal
-      const allScores = JSON.parse(localStorage.getItem("scores")) || [];
-      allScores.sort((a, b) => b.score - a.score);
-      resultHTML += "<h3>🏆 Classement des amis:</h3><ul>";
-      allScores.forEach(s => {
-        resultHTML += ⁠ <li>${s.name}: ${s.score}/10</li> ⁠;
-});
-      resultHTML += "</ul>";
-
-      document.getElementById("result").innerHTML = resultHTML;
-
-      // Desine gauge senp
-      const canvas = document.getElementById("scoreChart");
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#eee";
-      ctx.fillRect(0, 40, 200, 20);
-      ctx.fillStyle = "#28a745";
-      ctx.fillRect(0, 40, score * 20, 20);
-      ctx.font = "16px Arial";
-      ctx.fillStyle = "#000";
-      ctx.fillText(⁠ Score: ${score}/10 ⁠, 60, 30);
-}
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
+ ⁠
