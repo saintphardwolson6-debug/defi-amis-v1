@@ -1,0 +1,70 @@
+html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Créer ton défi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="intro-container">
+    <h2>🧠 Réponds à ces questions sur toi-même</h2>
+    <input type="text" id="username" placeholder="Ton prénom"><br><br>
+
+    <p>1. Ta couleur préférée?</p>
+    <select id="q1">
+      <option value="0">Bleu</option>
+      <option value="1">Rouge</option>
+      <option value="2">Vert</option>
+      <option value="3">Noir</option>
+    </select>
+
+    <p>2. Ton plat préféré?</p>
+    <select id="q2">
+      <option value="0">Pizza</option>
+      <option value="1">Sushi</option>
+      <option value="2">Spaghetti</option>
+      <option value="3">Fritay</option>
+    </select>
+
+    <p>3. Ton animal préféré?</p>
+    <select id="q3">
+      <option value="0">Chat</option>
+      <option value="1">Chien</option>
+      <option value="2">Oiseau</option>
+      <option value="3">Lapin</option>
+    </select>
+
+    <p>4. Ton style de musique?</p>
+    <select id="q4">
+      <option value="0">Rap</option>
+      <option value="1">Kompa</option>
+      <option value="2">Jazz</option>
+      <option value="3">Afrobeat</option>
+    </select>
+
+    <br><br>
+    <button onclick="generateLink()">Générer mon défi</button>
+    <div id="link-container" style="margin-top:20px;"></div>
+  </div>
+
+  <script>
+    function generateLink() {
+      const name = document.getElementById("username").value.trim();
+      if (!name) return alert("Entre ton prénom!");
+      const answers = [
+        document.getElementById("q1").value,
+        document.getElementById("q2").value,
+        document.getElementById("q3").value,
+        document.getElementById("q4").value
+      ];
+      const link = `play.html?user=${encodeURIComponent(name)}&answers=${answers.join(",")}`;
+      document.getElementById("link-container").innerHTML = `
+        <p>📤 Partage ce lien à tes amis:</p>
+        <input type="text" value="${location.origin}/defi-amis-v1/${link}" readonly style="width:90%;"><br><br>
+        <a href="https://wa.me/?text=${encodeURIComponent('Défi d\'amitié! Réponds ici: ' + location.origin + '/defi-amis-v1/' + link)}" target="_blank">📱 Partager sur WhatsApp</a>
+      `;
+}
+  </script>
+</body>
+</html>
