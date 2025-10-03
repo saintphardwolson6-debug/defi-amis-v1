@@ -1,4 +1,5 @@
 css
+/* Style global */
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(to right, #f9f9ff, #e0f7fa);
@@ -7,6 +8,7 @@ body {
   color: #333;
 }
 
+/* Container prensipal */
 .intro-container {
   max-width: 600px;
   margin: 40px auto;
@@ -14,28 +16,30 @@ body {
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  animation: fadeIn 1s ease-in-out;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
+/* Tit ak sou-tit */
 h1, h2 {
   text-align: center;
   color: #0077b6;
+  margin-bottom: 10px;
 }
 
-p {
-  margin: 10px 0;
+.subtitle {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 20px;
 }
 
-select, input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
+/* Imaj aksèy */
+.hero {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
+/* Bouton */
 button {
   background-color: #0077b6;
   color: white;
@@ -45,12 +49,26 @@ button {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  display: block;
+  margin: 20px auto;
 }
 
 button:hover {
   background-color: #023e8a;
 }
 
+/* Input ak select */
+input[type="text"], select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+/* Lyen */
 a {
   color: #0077b6;
   text-decoration: none;
@@ -61,15 +79,21 @@ a:hover {
   text-decoration: underline;
 }
 
-ul {
-  padding-left: 20px;
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+  color: #666;
 }
 
+/* Gauge canvas */
 canvas {
   display: block;
   margin: 0 auto;
 }
 
+/* Animasyon */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px);}
   to { opacity: 1; transform: translateY(0);}
