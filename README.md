@@ -1,24 +1,39 @@
 markdown
-# Défi d'amitié – Version 1
+# 🎉 Défi d'amitié
 
-Un jeu interactif pour tester l'amitié entre amis. Crée ton propre défi, partage-le, et découvre qui te connaît le mieux!
+Un jeu interactif pour tester à quel point tes amis te connaissent vraiment!
 
-## Fonctionnement
+## 🚀 Fonctionnement
 
-1. L'utilisateur répond à des questions sur lui-même (`create.html`)
-2. Un lien personnalisé est généré pour partager le défi
-3. Les amis répondent aux mêmes questions (`play.html`)
-4. Le score est calculé en fonction des réponses
+1. **Crée ton défi** en répondant à 10 questions personnelles.
+2. **Partage le lien** généré avec tes amis.
+3. **Tes amis jouent** en essayant de deviner tes réponses.
+4. **Leur score s'affiche** avec un graphique et un classement local.
 
-## Technologies utilisées
+## 📦 Fichiers principaux
 
-- HTML / CSS / JavaScript
-- Hébergement via GitHub Pages
+- `index.html`: Page d'accueil
+- `create.html`: Création du défi
+- `play.html`: Réponses des amis
+- `style.css`: Design du jeu
+- `script.js`: Logique JavaScript
+- `scoreChart.js`: Affichage graphique du score
+- `questions.json`: Liste des questions
+- `leaderboard.html`: Classement général
+- `share.js`: Fonctions de partage
+- `favicon.ico`: Icône du site
 
-## Lien du jeu
+## 🎨 Personnalisation
 
-👉 [Jouer maintenant](https://github.com/saintphardwolson6-debug/defi-amis-v1)
+Tu peux modifier les questions, les couleurs, ou ajouter des fonctionnalités comme:
+- Classement mondial avec Firebase
+- Partage direct sur WhatsApp, TikTok, etc.
+- Ajout d’images ou de sons
 
-## Licence
+## 📖 Licence
 
-Ce projet est sous licence MIT.
+Ce projet est sous licence MIT. Tu peux le modifier et le partager librement.
+
+---
+
+**Créé avec ❤️ pour s'amuser entre amis.**
