@@ -1,72 +1,44 @@
 html
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Réponds au défi</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="intro-container">
-    <h2>🎮 Défi d'amitié</h2>
-    <p id="intro-text"></p>
+<input type="text" id="friendName" placeholder="Ton prénom">
+ html
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const user = params.get("user");
+  const correctAnswers = params.get("answers")?.split(",").map(Number);
+  document.getElementById("intro-text").innerText = `Que sais-tu de ${user}? Réponds aux questions ci-dessous!`;
 
-    <p>1. Sa couleur préférée?</p>
-    <select id="a1">
-      <option value="0">Bleu</option>
-      <option value="1">Rouge</option>
-      <option value="2">Vert</option>
-      <option value="3">Noir</option>
-    </select>
+  function calculateScore() {
+    const friendName = document.getElementById("friendName").value.trim();
+    if (!friendName) return alert("Entre ton prénom!");
 
-    <p>2. Son plat préféré?</p>
-    <select id="a2">
-      <option value="0">Pizza</option>
-      <option value="1">Sushi</option>
-      <option value="2">Spaghetti</option>
-      <option value="3">Fritay</option>
-    </select>
+    const guesses = [
+      +document.getElementById("a1").value,
+      +document.getElementById("a2").value,
+      +document.getElementById("a3").value,
+      +document.getElementById("a4").value
+    ];
+    let score = guesses.filter((g, i) => g === correctAnswers[i]).length;
 
-    <p>3. Son animal préféré?</p>
-    <select id="a3">
-      <option value="0">Chat</option>
-      <option value="1">Chien</option>
-      <option value="2">Oiseau</option>
-      <option value="3">Lapin</option>
-    </select>
+    // Sove repons zanmi an
+    const previous = JSON.parse(localStorage.getItem("scores")) || [];
+    previous.push({ name: friendName, score: score});
+    localStorage.setItem("scores", JSON.stringify(previous));
 
-    <p>4. Son style de musique?</p>
-    <select id="a4">
-      <option value="0">Rap</option>
-<option value="1">Kompa</option>
-      <option value="2">Jazz</option>
-      <option value="3">Afrobeat</option>
-    </select>
+    // Afiche rezilta
+    let resultHTML = `
+      <h3>${user}, ton ami ${friendName} a obtenu ${score}/4 points!</h3>
+      <p><a href="create.html">🎯 Crée ton propre défi maintenant</a></p>
+    `;
 
-    <br><br>
-    <button onclick="calculateScore()">Voir mon score</button>
-    <div id="result" style="margin-top:20px;"></div>
-  </div>
+    // Afiche klasman
+    const allScores = JSON.parse(localStorage.getItem("scores")) || [];
+    allScores.sort((a, b) => b.score - a.score);
+    resultHTML += "<h3>🏆 Classement des amis:</h3><ul>";
+    allScores.forEach(s => {
+      resultHTML += `<li>${s.name}: ${s.score}/4</li>`;
+});
+    resultHTML += "</ul>";
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const user = params.get("user");
-    const correctAnswers = params.get("answers")?.split(",").map(Number);
-    document.getElementById("intro-text").innerText = `Que sais-tu de ${user}? Réponds aux questions ci-dessous!`;
-
-    function calculateScore() {
-      const guesses = [
-        +document.getElementById("a1").value,
-        +document.getElementById("a2").value,
-        +document.getElementById("a3").value,
-        +document.getElementById("a4").value
-      ];
-      let score = guesses.filter((g, i) => g === correctAnswers[i]).length;
-      document.getElementById("result").innerHTML = `
-        <h3>${user}, ton ami a obtenu ${score}/4 points!</h3>
-        <p>Partage ce défi à d'autres amis pour voir qui te connaît le mieux!</p>
-      `;
+    document.getElementById("result").innerHTML = resultHTML;
 }
-  </script>
-</body>
-</html>
+</script>
