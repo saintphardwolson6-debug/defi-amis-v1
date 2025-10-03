@@ -1,49 +1,76 @@
 css
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f0f8ff;
-  text-align: center;
-  padding: 40px;
+  background: linear-gradient(to right, #f9f9ff, #e0f7fa);
+  margin: 0;
+  padding: 0;
+  color: #333;
 }
 
 .intro-container {
-  background-color: #fff;
+  max-width: 600px;
+  margin: 40px auto;
+  background: #ffffff;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
-  display: inline-block;
-  max-width: 500px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  animation: fadeIn 1s ease-in-out;
 }
 
 h1, h2 {
-  font-size: 28px;
-  margin-bottom: 10px;
+  text-align: center;
+  color: #0077b6;
 }
 
 p {
-  font-size: 16px;
   margin: 10px 0;
 }
 
 select, input[type="text"] {
+  width: 100%;
   padding: 10px;
-  width: 80%;
-  font-size: 16px;
-  border-radius: 6px;
+  margin-top: 5px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
-  margin-bottom: 10px;
+  border-radius: 6px;
+  font-size: 16px;
 }
 
 button {
-  padding: 12px 24px;
-  background-color: #28a745;
+  background-color: #0077b6;
   color: white;
+  padding: 12px 20px;
   border: none;
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #218838;
+  background-color: #023e8a;
+}
+
+a {
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px);}
+  to { opacity: 1; transform: translateY(0);}
 }
