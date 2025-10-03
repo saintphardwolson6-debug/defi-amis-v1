@@ -3,12 +3,14 @@ html
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Créer ton défi</title>
+  <title>Crée ton défi</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="intro-container">
-    <h2>🧠 Réponds à ces questions sur toi-même</h2>
+    <h2>🧠 Crée ton défi d'amitié</h2>
+    <p>Réponds aux questions sur toi-même. Ensuite, partage le lien avec tes amis pour voir qui te connaît le mieux!</p>
+
     <input type="text" id="username" placeholder="Ton prénom"><br><br>
 
     <p>1. Ta couleur préférée?</p>
@@ -43,26 +45,74 @@ html
       <option value="3">Afrobeat</option>
     </select>
 
+    <p>5. Ton sport préféré?</p>
+    <select id="q5">
+      <option value="0">Football</option>
+      <option value="1">Basketball</option>
+      <option value="2">Natation</option>
+      <option value="3">Tennis</option>
+    </select>
+
+    <p>6. Ta boisson préférée?</p>
+    <select id="q6">
+      <option value="0">Coca</option>
+      <option value="1">Jus naturel</option>
+      <option value="2">Café</option>
+      <option value="3">Thé</option>
+    </select>
+
+    <p>7. Ton genre de film préféré?</p>
+    <select id="q7">
+      <option value="0">Action</option>
+      <option value="1">Comédie</option>
+      <option value="2">Romance</option>
+      <option value="3">Horreur</option>
+    </select>
+
+    <p>8. Ta saison préférée?</p>
+    <select id="q8">
+      <option value="0">Été</option>
+      <option value="1">Hiver</option>
+      <option value="2">Printemps</option>
+      <option value="3">Automne</option>
+    </select>
+
+    <p>9. Ton passe-temps favori?</p>
+    <select id="q9">
+      <option value="0">Lire</option>
+      <option value="1">Danser</option>
+      <option value="2">Jeux vidéo</option>
+      <option value="3">Voyager</option>
+    </select>
+
+    <p>10. Ton réseau social préféré?</p>
+    <select id="q10">
+      <option value="0">Instagram</option>
+      <option value="1">TikTok</option>
+      <option value="2">Facebook</option>
+      <option value="3">Twitter</option>
+    </select>
+
     <br><br>
-    <button onclick="generateLink()">Générer mon défi</button>
-    <div id="link-container" style="margin-top:20px;"></div>
+    <button onclick="generateLink()">Générer le lien</button>
+    <div id="linkResult" style="margin-top:20px;"></div>
   </div>
 
   <script>
     function generateLink() {
       const name = document.getElementById("username").value.trim();
       if (!name) return alert("Entre ton prénom!");
-      const answers = [
-        document.getElementById("q1").value,
-        document.getElementById("q2").value,
-        document.getElementById("q3").value,
-        document.getElementById("q4").value
-      ];
+
+      const answers = [];
+      for (let i = 1; i <= 10; i++) {
+        answers.push(document.getElementById("q" + i).value);
+}
+
       const link = `play.html?user=${encodeURIComponent(name)}&answers=${answers.join(",")}`;
-      document.getElementById("link-container").innerHTML = `
-        <p>📤 Partage ce lien à tes amis:</p>
-        <input type="text" value="${location.origin}/defi-amis-v1/${link}" readonly style="width:90%;"><br><br>
-        <a href="https://wa.me/?text=${encodeURIComponent('Défi d\'amitié! Réponds ici: ' + location.origin + '/defi-amis-v1/' + link)}" target="_blank">📱 Partager sur WhatsApp</a>
+      document.getElementById("linkResult").innerHTML = `
+        <p>✅ Voici ton lien personnalisé:</p>
+        <input type="text" value="${link}" readonly style="width:100%;"><br><br>
+        <a href="${link}">🔗 Tester le lien</a>
       `;
 }
   </script>
