@@ -1,68 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Créer ton Défi</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Défi Amis — Créer</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="fade-in">
-  <div class="container">
-    <h2>🧠 Crée ton défi</h2>
-    <div id="questions"></div>
-    <button id="finishBtn">Terminer</button>
+<body class="bg">
+  <main class="card">
+    <div class="top">
+      <button class="back" onclick="location.href='index.html'">← Accueil</button>
+      <div></div>
+    </div>
 
-    <div id="shareSection" class="hidden">
-      <p>Partage ton lien 👇</p>
-      <input type="text" id="shareLink" readonly>
+    <h2 id="title">Créer ton défi</h2>
+    <p class="muted" id="subtitle">Réponds aux questions sur toi (texte libre).</p>
+
+    <div id="qList"></div>
+
+    <div class="row">
+      <button id="btnFinish" class="btn primary">Terminer & Générer UID</button>
+    </div>
+
+    <div id="shareBox" class="created hidden">
+      <h3>Ton UID : <span id="uidText"></span></h3>
+      <input id="shareLink" readonly />
       <div class="socials">
-        <a id="whatsapp" target="_blank">📱 WhatsApp</a>
-        <a id="facebook" target="_blank">📘 Facebook</a>
-        <a id="twitter" target="_blank">🐦 Twitter</a>
+        <a id="wa" class="sbtn">WhatsApp</a>
+        <a id="fb" class="sbtn">Facebook</a>
+        <a id="copy" class="sbtn">Copier lien</a>
+      </div>
+      <div class="small muted">Tu peux maintenant aller à la salle pour voir les joueurs.</div>
+      <div class="row" style="margin-top:12px;">
+        <button id="gotoRoom" class="btn">Aller à ma salle</button>
       </div>
     </div>
-  </div>
+  </main>
 
-  <script>
-    const questions = [
-      { q: "Ton plat préféré ?", options: ["Pizza", "Burger", "Riz", "Pâtes"] },
-      { q: "Ton sport préféré ?", options: ["Football", "Basket", "Tennis", "Natation"] },
-      { q: "Ton animal préféré ?", options: ["Chien", "Chat", "Oiseau", "Lion"] },
-      { q: "Ta couleur préférée ?", options: ["Rouge", "Bleu", "Noir", "Vert"] },
-      { q: "Ton rêve le plus fou ?", options: ["Voyager", "Être riche", "Célébrité", "Dormir"] },
-    ];
+<script>
+  // Questions set (editable)
+  const QUESTIONS = [
+    "Quel est ton plat préféré ?",
+    "Quel est ton sport préféré ?",
+    "Quel est ton animal préféré ?",
+    "Quelle est ta couleur préférée ?",
+    "Quel est ton rêve le plus fou ?"
+  ];
 
-    const qContainer = document.getElementById("questions");
-    questions.forEach((q, i) => {
-      qContainer.innerHTML += `
-        <div class="question-block">
-          <p>${q.q}</p>
-          ${q.options.map(opt => `
-            <label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label>
-          `).join("")}
-        </div>`;
-    });
+  // parse uid param
+  const params = new URLSearchParams(location.search);
+  const uid = params.get('uid') || localStorage.getItem('lastCreatedUID');
+  if(!uid){ alert('UID introuvable. Reviens à l\'accueil.'); location.href='index.html'; }
 
-    document.getElementById("finishBtn").addEventListener("click", () => {
-      let answers = {};
-      questions.forEach((_, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        answers[i] = selected ? selected.value : "";
-      });
+  const key = `room_${uid}`;
+  const raw = JSON.parse(localStorage.getItem(key) || '{}');
+  const host = raw.host || localStorage.getItem('creatorName') || raw.host || 'Hôte';
 
-      const name = localStorage.getItem("creatorName");
-      const uid = localStorage.getItem("uid");
+  document.getElementById('title').textContent = `Créer le défi de ${host}`;
+  document.getElementById('subtitle').textContent = `UID: ${uid} • Réponds aux questions ci-dessous.`;
 
-      localStorage.setItem(`answers_${uid}`, JSON.stringify(answers));
+  const qList = document.getElementById('qList');
+  QUESTIONS.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'question';
+    div.innerHTML = `<label>${i+1}. ${q}</label><input type="text" id="a${i}" placeholder="Ta réponse..." />`;
+    qList.appendChild(div);
+  });
 
-      const shareURL = `${window.location.origin}${window.location.pathname.replace("create.html","play.html")}?uid=${uid}&user=${encodeURIComponent(name)}`;
-      document.getElementById("shareLink").value = shareURL;
-      document.getElementById("shareSection").classList.remove("hidden");
+  document.getElementById('btnFinish').addEventListener('click', ()=>{
+    const answers = QUESTIONS.map((_,i)=> document.getElementById(`a${i}`).value.trim() || '');
+    // load room, update
+    const room = JSON.parse(localStorage.getItem(key) || '{}');
+    room.host = host;
+    room.uid = uid;
+    room.answers = answers;
+    room.players = room.players || [];
+    room.started = false;
+    room.createdAt = room.createdAt || new Date().toISOString();
+    localStorage.setItem(key, JSON.stringify(room));
 
-      document.getElementById("whatsapp").href = `https://wa.me/?text=${encodeURIComponent("🔥 Viens deviner les réponses de " + name + " ! " + shareURL)}`;
-      document.getElementById("facebook").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareURL)}`;
-      document.getElementById("twitter").href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareURL)}&text=🔥 Défi de ${name}`;
-    });
-  </script>
+    // show share box
+    const base = location.origin + location.pathname.replace(/\/[^/]*$/,'/') ;
+    const link = `${base}play.html?uid=${encodeURIComponent(uid)}`;
+    document.getElementById('uidText').textContent = uid;
+    document.getElementById('shareLink').value = link;
+    document.getElementById('shareBox').classList.remove('hidden');
+
+    // social buttons
+    document.getElementById('wa').href = `https://wa.me/?text=${encodeURIComponent('Viens deviner mes réponses ! ' + link)}`;
+    document.getElementById('fb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`;
+    document.getElementById('copy').addEventListener('click', ()=>{ document.getElementById('shareLink').select(); document.execCommand('copy'); alert('Lien copié'); });
+  });
+
+  document.getElementById('gotoRoom').addEventListener('click', ()=> {
+    location.href = `room.html?uid=${encodeURIComponent(uid)}`;
+  });
+</script>
 </body>
 </html>
