@@ -1,69 +1,136 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joue le Défi</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Défi Amis — Jouer</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="fade-in">
-  <div class="container">
-    <h2 id="title"></h2>
-    <div id="questions"></div>
-    <input type="text" id="friendName" placeholder="Ton nom..." />
-    <button id="submitBtn">Valider mes réponses</button>
-    <div id="result" class="hidden"></div>
-  </div>
+<body class="bg">
+  <main class="card">
+    <div class="top">
+      <button class="back" onclick="location.href='index.html'">← Accueil</button>
+      <div></div>
+    </div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const user = params.get("user");
-    const uid = params.get("uid");
+    <h2 id="roomTitle">Défi</h2>
+    <p class="muted" id="roomInfo"></p>
 
-    document.getElementById("title").textContent = `Défi de ${user} 🎯`;
+    <div id="joinBox">
+      <label>Ton nom</label>
+      <input id="playerName" type="text" placeholder="Ton prénom..." />
+      <button id="joinBtn" class="btn primary">Rejoindre la salle</button>
+    </div>
 
-    const questions = [
-      { q: `Le plat préféré de ${user} ?`, options: ["Pizza", "Burger", "Riz", "Pâtes"] },
-      { q: `Le sport préféré de ${user} ?`, options: ["Football", "Basket", "Tennis", "Natation"] },
-      { q: `L’animal préféré de ${user} ?`, options: ["Chien", "Chat", "Oiseau", "Lion"] },
-      { q: `La couleur préférée de ${user} ?`, options: ["Rouge", "Bleu", "Noir", "Vert"] },
-      { q: `Le rêve le plus fou de ${user} ?`, options: ["Voyager", "Être riche", "Célébrité", "Dormir"] },
+    <div id="waitBox" class="hidden">
+      <p class="muted">En attente que l'hôte lance le jeu...</p>
+      <div class="small muted">La page se mettra à jour automatiquement.</div>
+    </div>
+
+    <form id="quizForm" class="hidden">
+      <div id="questions"></div>
+      <div class="row"><button type="button" id="submitAnswers" class="btn">Terminer et voir résultat</button></div>
+    </form>
+
+    <div id="resultBox" class="hidden card created"></div>
+  </main>
+
+<script>
+  function $(id){return document.getElementById(id);}
+  const params = new URLSearchParams(location.search);
+  const uid = params.get('uid');
+  if(!uid){ alert('UID manquant'); location.href='index.html'; }
+  const key = `room_${uid}`;
+  let room = JSON.parse(localStorage.getItem(key) || '{}');
+  if(!room || !room.answers){ alert('Salle introuvable ou hôte n\'a pas fini de configurer.'); location.href='index.html'; }
+
+  $('roomTitle').textContent = `Défi de ${room.host || 'Hôte'}`;
+  $('roomInfo').textContent = `UID: ${uid} • Questions: ${room.answers.length}`;
+
+  // elements
+  const joinBox = $('joinBox'), waitBox = $('waitBox'), quizForm = $('quizForm'), questionsWrap = $('questions'), resultBox = $('resultBox');
+
+  // join
+  $('joinBtn').addEventListener('click', ()=> {
+    const name = $('playerName').value.trim();
+    if(!name) { alert('Entre ton prénom'); return; }
+    localStorage.setItem('lastPlayerName', name);
+    // refresh room state
+    room = JSON.parse(localStorage.getItem(key) || '{}');
+    // if not started, show wait
+    if(!room.started){ joinBox.classList.add('hidden'); waitBox.classList.remove('hidden'); pollRoomStart(); }
+    else { joinBox.classList.add('hidden'); startQuiz(name); }
+  });
+
+  // poll for start
+  let pollInterval = null;
+  function pollRoomStart(){
+    pollInterval = setInterval(()=>{
+      room = JSON.parse(localStorage.getItem(key) || '{}');
+      if(room.started){ clearInterval(pollInterval); waitBox.classList.add('hidden'); startQuiz(localStorage.getItem('lastPlayerName') || 'Invité'); }
+    }, 900);
+  }
+
+  // start quiz
+  function startQuiz(playerName){
+    quizForm.classList.remove('hidden');
+    questionsWrap.innerHTML = '';
+    // Use room.answers length and questions texts (we display generic prompts)
+    const prompts = [
+      "Quel est son plat préféré ?",
+      "Quel est son sport préféré ?",
+      "Quel est son animal préféré ?",
+      "Quelle est sa couleur préférée ?",
+      "Quel est son rêve le plus fou ?"
     ];
-
-    const qContainer = document.getElementById("questions");
-    questions.forEach((q, i) => {
-      qContainer.innerHTML += `
-        <div class="question-block">
-          <p>${q.q}</p>
-          ${q.options.map(opt => `
-            <label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label>
-          `).join("")}
-        </div>`;
+    room.answers.forEach((_,i)=>{
+      const div = document.createElement('div');
+      div.className = 'question';
+      div.innerHTML = `<label>${prompts[i] || 'Question ' + (i+1)}</label><input type="text" id="ans${i}" placeholder="Ta réponse..." />`;
+      questionsWrap.appendChild(div);
     });
 
-    document.getElementById("submitBtn").addEventListener("click", () => {
-      const answers = JSON.parse(localStorage.getItem(`answers_${uid}`));
-      const friend = document.getElementById("friendName").value.trim();
-      if (!friend) return alert("Entre ton nom !");
-      let score = 0;
-      questions.forEach((_, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        if (selected && selected.value === answers[i]) score++;
+    $('submitAnswers').addEventListener('click', ()=> {
+      const player = localStorage.getItem('lastPlayerName') || 'Invité';
+      const answers = room.answers;
+      let score = 0; const guestAnswers = [];
+      room.answers.forEach((_,i)=>{
+        const a = (document.getElementById(`ans${i}`).value || '').trim();
+        guestAnswers.push(a);
+        if(a && a.toLowerCase() === (answers[i]||'').toLowerCase()) score++;
       });
+      // save to room.players
+      const res = { name: player, score, answers: guestAnswers, playedAt: new Date().toISOString() };
+      room.players = room.players || [];
+      room.players.push(res);
+      localStorage.setItem(key, JSON.stringify(room));
 
-      let leaderboard = JSON.parse(localStorage.getItem(`leaderboard_${uid}`) || "[]");
-      leaderboard.push({ name: friend, score });
-      localStorage.setItem(`leaderboard_${uid}`, JSON.stringify(leaderboard));
-
-      let html = `<h3>Classement des amis de ${user}</h3><ul>`;
-      leaderboard.sort((a,b) => b.score - a.score).forEach(p => {
-        html += `<li>${p.name} : ${p.score}/5</li>`;
-      });
-      html += "</ul>";
-
-      document.getElementById("result").innerHTML = html + `<br><button onclick="window.location='index.html'">Créer ton défi</button>`;
-      document.getElementById("result").classList.remove("hidden");
+      // show result + invite create own
+      quizForm.classList.add('hidden');
+      resultBox.classList.remove('hidden');
+      resultBox.innerHTML = `<h3>Bravo ${escapeHtml(player)} 🎉</h3>
+         <p>Tu as obtenu <strong>${score}</strong> / ${answers.length}</p>
+         <div class="row">
+           <button class="btn primary" onclick="location.href='index.html'">Créer mon propre défi</button>
+           <button class="btn ghost" onclick="location.href='room.html?uid=${encodeURIComponent(uid)}'">Voir classement de ${escapeHtml(room.host)}</button>
+         </div>`;
     });
-  </script>
+  }
+
+  // escape helper
+  function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  // simple polling to refresh if room is changed while waiting on screen
+  setInterval(()=> {
+    const r = JSON.parse(localStorage.getItem(key) || '{}');
+    if(!r) return;
+    // update info if needed
+    if(r.started && waitBox && !waitBox.classList.contains('hidden')){
+      clearInterval(pollInterval);
+      waitBox.classList.add('hidden');
+      startQuiz(localStorage.getItem('lastPlayerName')||'Invité');
+    }
+  }, 1200);
+</script>
 </body>
 </html>
