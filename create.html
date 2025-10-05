@@ -3,55 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crée ton Défi 🎯</title>
+  <title>Créer ton Défi</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="container slide-up">
-    <h2>👋 Salut <span id="hostName"></span> !</h2>
-    <p>Réponds à ces questions sur toi-même :</p>
+<body class="fade-in">
+  <div class="container">
+    <h2>🧠 Réponds à ces questions sur toi</h2>
 
-    <form id="questionForm">
-      <div class="question">
-        <p>1️⃣ Quelle est ta boisson préférée ?</p>
-        <select id="q1">
-          <option>Café</option>
-          <option>Jus</option>
-          <option>Eau</option>
-          <option>Soda</option>
-        </select>
+    <div id="questions"></div>
+    <button id="finishBtn">Terminer & Générer le lien</button>
+
+    <div id="shareSection" class="hidden">
+      <p>Partage ton lien 👇</p>
+      <input type="text" id="shareLink" readonly>
+      <div class="socials">
+        <a id="whatsapp" target="_blank">📱 WhatsApp</a>
+        <a id="facebook" target="_blank">📘 Facebook</a>
+        <a id="twitter" target="_blank">🐦 Twitter</a>
       </div>
-
-      <div class="question">
-        <p>2️⃣ Quelle couleur préfères-tu ?</p>
-        <select id="q2">
-          <option>Rouge</option>
-          <option>Bleu</option>
-          <option>Noir</option>
-          <option>Blanc</option>
-        </select>
-      </div>
-
-      <button type="button" onclick="saveAnswers()">Terminer & Partager</button>
-    </form>
+    </div>
   </div>
 
   <script>
-    document.getElementById('hostName').innerText = localStorage.getItem('hostName') || "Inconnu";
+    const questions = [
+      "Ton plat préféré ?",
+      "Ton sport préféré ?",
+      "Ton animal préféré ?",
+      "Ta couleur préférée ?",
+      "Ton rêve le plus fou ?"
+    ];
 
-    function saveAnswers() {
-      const answers = {
-        q1: document.getElementById('q1').value,
-        q2: document.getElementById('q2').value
-      };
-      localStorage.setItem('answers', JSON.stringify(answers));
-      const host = localStorage.getItem('hostName');
-      const uid = Math.random().toString(36).substring(2, 8);
-      localStorage.setItem('uid', uid);
+    const qContainer = document.getElementById("questions");
+    questions.forEach((q, i) => {
+      qContainer.innerHTML += `
+        <label>${q}</label>
+        <input type="text" id="q${i}" placeholder="Ta réponse..." />
+      `;
+    });
 
-      const link = `${window.location.origin}/play.html?host=${encodeURIComponent(host)}&uid=${uid}`;
-      alert(`Défi créé ! Copie et partage ce lien :\n${link}`);
-    }
+    document.getElementById("finishBtn").addEventListener("click", () => {
+      const name = localStorage.getItem("creatorName");
+      let answers = {};
+      questions.forEach((_, i) => answers[i] = document.getElementById("q"+i).value);
+
+      localStorage.setItem("answers", JSON.stringify(answers));
+
+      const shareURL = `${window.location.origin}${window.location.pathname.replace("create.html","play.html")}?user=${encodeURIComponent(name)}`;
+      document.getElementById("shareLink").value = shareURL;
+
+      document.getElementById("shareSection").classList.remove("hidden");
+
+      document.getElementById("whatsapp").href = `https://wa.me/?text=${encodeURIComponent("🔥 Viens deviner mes réponses ! " + shareURL)}`;
+      document.getElementById("facebook").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareURL)}`;
+      document.getElementById("twitter").href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareURL)}&text=🔥 Défi Amis !`;
+    });
   </script>
 </body>
 </html>
