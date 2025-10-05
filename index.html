@@ -8,9 +8,9 @@
 </head>
 <body class="fade-in">
   <audio id="bgMusic" src="music.mp3" loop></audio>
-  <div class="container">
+  <div class="container intro">
     <h1 class="title">🎮 Défi Amis</h1>
-    <p>Entre ton nom pour commencer ton défi</p>
+    <p>Entre ton nom pour créer ton défi</p>
     <input type="text" id="username" placeholder="Ton nom..." />
     <button id="startBtn">Commencer</button>
   </div>
@@ -23,8 +23,10 @@
       const name = document.getElementById("username").value.trim();
       if (!name) return alert("Entre ton nom !");
       music.play();
+      const uid = Date.now().toString(36); // UID unique
       localStorage.setItem("creatorName", name);
-      window.location.href = "create.html";
+      localStorage.setItem("uid", uid);
+      window.location.href = "create.html?uid=" + uid;
     });
   </script>
 </body>
