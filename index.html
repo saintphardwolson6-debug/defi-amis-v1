@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Défi Amis 🎮</title>
-  <link rel="stylesheet" href="style.css">
-  <audio id="music" src="https://cdn.pixabay.com/audio/2021/09/20/audio_7c0c4d6b87.mp3" autoplay loop></audio>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Défi Amis</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="container fade-in">
-    <h1>🎮 Défi entre Amis</h1>
-    <p class="subtitle">Entre ton prénom pour commencer ton défi</p>
-    <input type="text" id="playerName" placeholder="Ton prénom...">
-    <button onclick="startGame()">Commencer</button>
+<body class="fade-in">
+  <audio id="bgMusic" src="music.mp3" loop></audio>
+  <div class="container">
+    <h1 class="title">🎮 Défi Amis</h1>
+    <p>Entre ton nom pour commencer ton défi</p>
+    <input type="text" id="username" placeholder="Ton nom..." />
+    <button id="startBtn">Commencer</button>
   </div>
 
   <script>
-    function startGame() {
-      const name = document.getElementById('playerName').value.trim();
-      if (!name) {
-        alert('Entre ton prénom avant de continuer !');
-        return;
-      }
-      localStorage.setItem('hostName', name);
+    const startBtn = document.getElementById("startBtn");
+    const music = document.getElementById("bgMusic");
+
+    startBtn.addEventListener("click", () => {
+      const name = document.getElementById("username").value.trim();
+      if (!name) return alert("Entre ton nom !");
+      music.play();
+      localStorage.setItem("creatorName", name);
       window.location.href = "create.html";
-    }
+    });
   </script>
 </body>
 </html>
