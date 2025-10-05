@@ -3,65 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joue le Défi 🕹</title>
+  <title>Joue le Défi</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="container fade-in">
-    <h2>Défi de <span id="hostName"></span></h2>
-    <p>Entre ton nom pour jouer :</p>
-    <input id="friendName" type="text" placeholder="Ton prénom...">
-    <button onclick="startPlay()">Commencer</button>
-  </div>
-
-  <div class="container hidden" id="quizSection">
-    <h3>Questions :</h3>
-
-    <div class="question">
-      <p>1️⃣ Quelle est sa boisson préférée ?</p>
-      <select id="a1">
-        <option>Café</option>
-        <option>Jus</option>
-        <option>Eau</option>
-        <option>Soda</option>
-      </select>
-    </div>
-
-    <div class="question">
-      <p>2️⃣ Quelle couleur préfère-t-il ?</p>
-      <select id="a2">
-        <option>Rouge</option>
-        <option>Bleu</option>
-        <option>Noir</option>
-        <option>Blanc</option>
-      </select>
-    </div>
-
-    <button onclick="checkAnswers()">Voir mes résultats</button>
+<body class="fade-in">
+  <div class="container">
+    <h2 id="title">Défi Amis</h2>
+    <div id="gameZone"></div>
+    <button id="submitBtn">Envoyer mes réponses</button>
+    <div id="result" class="hidden"></div>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const host = params.get('host');
-    document.getElementById('hostName').innerText = host;
+    const user = params.get("user");
+    const creatorAnswers = JSON.parse(localStorage.getItem("answers") || "{}");
 
-    function startPlay() {
-      const name = document.getElementById('friendName').value.trim();
-      if (!name) return alert('Entre ton prénom !');
-      document.querySelector('.container').classList.add('hidden');
-      document.getElementById('quizSection').classList.remove('hidden');
-      localStorage.setItem('friendName', name);
-    }
+    if (!user) document.getElementById("title").textContent = "Erreur : utilisateur introuvable";
 
-    function checkAnswers() {
-      const saved = JSON.parse(localStorage.getItem('answers'));
-      const score =
-        (saved.q1 === document.getElementById('a1').value ? 1 : 0) +
-        (saved.q2 === document.getElementById('a2').value ? 1 : 0);
+    const qContainer = document.getElementById("gameZone");
+    const questions = [
+      "Son plat préféré ?",
+      "Son sport préféré ?",
+      "Son animal préféré ?",
+      "Sa couleur préférée ?",
+      "Son rêve le plus fou ?"
+    ];
 
-      const friend = localStorage.getItem('friendName');
-      alert(`🎉 ${friend}, tu as obtenu ${score}/2 au défi de ${host}!`);
-    }
+    questions.forEach((q, i) => {
+      qContainer.innerHTML += `
+        <label>${q}</label>
+        <input type="text" id="r${i}" placeholder="Ta réponse..." />
+      `;
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      let score = 0;
+      questions.forEach((_, i) => {
+        const guess = document.getElementById("r"+i).value.trim().toLowerCase();
+        const correct = (creatorAnswers[i] || "").trim().toLowerCase();
+        if (guess && guess === correct) score++;
+      });
+
+      document.getElementById("result").innerHTML = `
+        <h3>Résultat 🎯</h3>
+        <p>Tu as ${score}/${questions.length} bonnes réponses !</p>
+      `;
+      document.getElementById("result").classList.remove("hidden");
+    });
   </script>
 </body>
 </html>
