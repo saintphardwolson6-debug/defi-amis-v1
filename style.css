@@ -1,100 +1,66 @@
-css
-/* Style global */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #f9f9ff, #e0f7fa);
-  margin: 0;
-  padding: 0;
-  color: #333;
-}
-
-/* Container prensipal */
-.intro-container {
-  max-width: 600px;
-  margin: 40px auto;
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  animation: fadeIn 0.8s ease-in-out;
-}
-
-/* Tit ak sou-tit */
-h1, h2 {
-  text-align: center;
-  color: #0077b6;
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  text-align: center;
-  font-size: 18px;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-/* Imaj aksèy */
-.hero {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-/* Bouton */
-button {
-  background-color: #0077b6;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff0066, #6600ff);
   color: white;
-  padding: 12px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+  width: 90%;
+  max-width: 400px;
+}
+
+input, select, button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
+  outline: none;
+  font-size: 1em;
+}
+
+button {
+  background: #ffcc00;
+  color: #000;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: block;
-  margin: 20px auto;
+  transition: transform 0.2s;
 }
 
 button:hover {
-  background-color: #023e8a;
+  transform: scale(1.05);
+  background: #ffee33;
 }
 
-/* Input ak select */
-input[type="text"], select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
+.hidden {
+  display: none;
 }
 
-/* Lyen */
-a {
-  color: #0077b6;
-  text-decoration: none;
-  font-weight: bold;
+.fade-in {
+  animation: fadeIn 1s ease-in;
 }
 
-a:hover {
-  text-decoration: underline;
+.slide-up {
+  animation: slideUp 1s ease-in;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  margin-top: 30px;
-  font-size: 14px;
-  color: #666;
-}
-
-/* Gauge canvas */
-canvas {
-  display: block;
-  margin: 0 auto;
-}
-
-/* Animasyon */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px);}
-  to { opacity: 1; transform: translateY(0);}
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
 }
