@@ -1,33 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Défi Amis</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Défi Amis — Accueil</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="fade-in">
-  <audio id="bgMusic" src="music.mp3" loop></audio>
-  <div class="container intro">
-    <h1 class="title">🎮 Défi Amis</h1>
-    <p>Entre ton nom pour créer ton défi</p>
-    <input type="text" id="username" placeholder="Ton nom..." />
-    <button id="startBtn">Commencer</button>
-  </div>
+<body class="bg">
+  <main class="card center">
+    <div class="logo">Défi<span class="accent">Amis</span></div>
+    <h1>Bienvenue — Défi entre amis</h1>
+    <p class="muted">Crée ton défi ou rejoins une salle avec un UID</p>
 
-  <script>
-    const startBtn = document.getElementById("startBtn");
-    const music = document.getElementById("bgMusic");
+    <div class="row">
+      <input id="creatorName" type="text" placeholder="Ton prénom / pseudo" />
+      <button id="btnCreate" class="btn primary">Créer un défi</button>
+    </div>
 
-    startBtn.addEventListener("click", () => {
-      const name = document.getElementById("username").value.trim();
-      if (!name) return alert("Entre ton nom !");
-      music.play();
-      const uid = Date.now().toString(36); // UID unique
-      localStorage.setItem("creatorName", name);
-      localStorage.setItem("uid", uid);
-      window.location.href = "create.html?uid=" + uid;
-    });
-  </script>
+    <hr />
+
+    <div class="row">
+      <input id="joinUID" type="text" placeholder="Entrer UID pour rejoindre une salle (ex: ABC-12345)" />
+      <button id="btnJoin" class="btn">Rejoindre</button>
+    </div>
+
+    <p class="small muted">Les données sont stockées localement (localStorage). Pour partager : copiez le lien après création.</p>
+    <div class="credits">Version 1.0 — par Tchoulo</div>
+  </main>
+
+<script>
+  // generate UID helper
+  function genUID(seed='USER'){
+    const s = (seed||'USER').toString().toUpperCase().replace(/[^A-Z0-9]+/g,'').slice(0,6) || 'USER';
+    return `${s}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
+  }
+
+  document.getElementById('btnCreate').addEventListener('click', ()=>{
+    const name = document.getElementById('creatorName').value.trim();
+    if(!name){ alert('Entre ton prénom ou pseudo.'); return; }
+    const uid = genUID(name);
+    // init room object
+    const key = `room_${uid}`;
+    const room = {
+      host: name,
+      uid,
+      answers: [], // host answers (strings)
+      players: [], // {name,score,answers,playedAt}
+      started: false,
+      createdAt: new Date().toISOString()
+    };
+    localStorage.setItem(key, JSON.stringify(room));
+    // store last created uid
+    localStorage.setItem('lastCreatedUID', uid);
+    // go to create page
+    window.location.href = `create.html?uid=${encodeURIComponent(uid)}`;
+  });
+
+  document.getElementById('btnJoin').addEventListener('click', ()=>{
+    const uid = document.getElementById('joinUID').value.trim();
+    if(!uid){ alert('Entre un UID.'); return; }
+    // check room exists
+    const key = `room_${uid}`;
+    const data = localStorage.getItem(key);
+    if(!data){ alert('Salle introuvable. Vérifie l\'UID.'); return; }
+    // navigate to play
+    window.location.href = `play.html?uid=${encodeURIComponent(uid)}`;
+  });
+</script>
 </body>
 </html>
