@@ -8,47 +8,60 @@
 </head>
 <body class="fade-in">
   <div class="container">
-    <h2 id="title">Défi Amis</h2>
-    <div id="gameZone"></div>
-    <button id="submitBtn">Envoyer mes réponses</button>
+    <h2 id="title"></h2>
+    <div id="questions"></div>
+    <input type="text" id="friendName" placeholder="Ton nom..." />
+    <button id="submitBtn">Valider mes réponses</button>
     <div id="result" class="hidden"></div>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const user = params.get("user");
-    const creatorAnswers = JSON.parse(localStorage.getItem("answers") || "{}");
+    const uid = params.get("uid");
 
-    if (!user) document.getElementById("title").textContent = "Erreur : utilisateur introuvable";
+    document.getElementById("title").textContent = `Défi de ${user} 🎯`;
 
-    const qContainer = document.getElementById("gameZone");
     const questions = [
-      "Son plat préféré ?",
-      "Son sport préféré ?",
-      "Son animal préféré ?",
-      "Sa couleur préférée ?",
-      "Son rêve le plus fou ?"
+      { q: `Le plat préféré de ${user} ?`, options: ["Pizza", "Burger", "Riz", "Pâtes"] },
+      { q: `Le sport préféré de ${user} ?`, options: ["Football", "Basket", "Tennis", "Natation"] },
+      { q: `L’animal préféré de ${user} ?`, options: ["Chien", "Chat", "Oiseau", "Lion"] },
+      { q: `La couleur préférée de ${user} ?`, options: ["Rouge", "Bleu", "Noir", "Vert"] },
+      { q: `Le rêve le plus fou de ${user} ?`, options: ["Voyager", "Être riche", "Célébrité", "Dormir"] },
     ];
 
+    const qContainer = document.getElementById("questions");
     questions.forEach((q, i) => {
       qContainer.innerHTML += `
-        <label>${q}</label>
-        <input type="text" id="r${i}" placeholder="Ta réponse..." />
-      `;
+        <div class="question-block">
+          <p>${q.q}</p>
+          ${q.options.map(opt => `
+            <label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label>
+          `).join("")}
+        </div>`;
     });
 
     document.getElementById("submitBtn").addEventListener("click", () => {
+      const answers = JSON.parse(localStorage.getItem(`answers_${uid}`));
+      const friend = document.getElementById("friendName").value.trim();
+      if (!friend) return alert("Entre ton nom !");
       let score = 0;
       questions.forEach((_, i) => {
-        const guess = document.getElementById("r"+i).value.trim().toLowerCase();
-        const correct = (creatorAnswers[i] || "").trim().toLowerCase();
-        if (guess && guess === correct) score++;
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && selected.value === answers[i]) score++;
       });
 
-      document.getElementById("result").innerHTML = `
-        <h3>Résultat 🎯</h3>
-        <p>Tu as ${score}/${questions.length} bonnes réponses !</p>
-      `;
+      let leaderboard = JSON.parse(localStorage.getItem(`leaderboard_${uid}`) || "[]");
+      leaderboard.push({ name: friend, score });
+      localStorage.setItem(`leaderboard_${uid}`, JSON.stringify(leaderboard));
+
+      let html = `<h3>Classement des amis de ${user}</h3><ul>`;
+      leaderboard.sort((a,b) => b.score - a.score).forEach(p => {
+        html += `<li>${p.name} : ${p.score}/5</li>`;
+      });
+      html += "</ul>";
+
+      document.getElementById("result").innerHTML = html + `<br><button onclick="window.location='index.html'">Créer ton défi</button>`;
       document.getElementById("result").classList.remove("hidden");
     });
   </script>
