@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Défi Amis — Salle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg">
+  <main class="card">
+    <div class="top">
+      <button class="back" onclick="location.href='index.html'">← Accueil</button>
+      <div></div>
+    </div>
+
+    <h2 id="roomTitle">Salle</h2>
+    <p class="muted" id="roomSubtitle"></p>
+
+    <div class="created">
+      <strong>UID :</strong> <span id="uidDisplay"></span>
+      <div class="small muted">Partager ce lien :</div>
+      <input id="roomLink" readonly />
+      <div class="row">
+        <button id="copyLink" class="btn">Copier</button>
+        <button id="startRoom" class="btn primary">Lancer le jeu</button>
+        <button id="resetRoom" class="btn ghost">Réinitialiser salle</button>
+      </div>
+    </div>
+
+    <h3 style="margin-top:18px">Classement (participants)</h3>
+    <ol id="leaderboard" class="leaderboard"></ol>
+
+    <div class="small muted">La page se mettra à jour automatiquement quand des joueurs finiront.</div>
+  </main>
+
+  <canvas id="confetti" class="confetti hidden"></canvas>
+
+<script>
+  function $(id){ return document.getElementById(id); }
+  const params = new URLSearchParams(location.search);
+  const uid = params.get('uid') || localStorage.getItem('lastCreatedUID');
+  if(!uid){ alert('UID introuvable'); location.href='index.html'; }
+  const key = `room_${uid}`;
+  let room = JSON.parse(localStorage.getItem(key) || '{}');
+
+  // initialize
+  $('roomTitle').textContent = `Salle de ${room.host || 'Hôte'}`;
+  $('roomSubtitle').textContent = `Créée: ${room.createdAt || '—'}`;
+  $('uidDisplay').textContent = uid;
+  const base = location.origin + location.pathname.replace(/\/[^/]*$/,'/');
+  const link = `${base}play.html?uid=${encodeURIComponent(uid)}`;
+  $('roomLink').value = link;
+
+  $('copyLink').addEventListener('click', ()=>{ $('roomLink').select(); document.execCommand('copy'); alert('Lien copié'); });
+
+  function renderLeaderboard(){
+    room = JSON.parse(localStorage.getItem(key) || '{}');
+    const list = room.players || [];
+    const ol = $('leaderboard');
+    ol.innerHTML = '';
+    if(list.length===0){ ol.innerHTML = '<li>Aucun participant encore</li>'; return; }
+    list.sort((a,b)=> b.score - a.score);
+    list.forEach(p=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${p.name}</strong> — ${p.score}/${room.answers.length} <div class="small muted">${new Date(p.playedAt).toLocaleString()}</div>`;
+      ol.appendChild(li);
+    });
+  }
+
+  // start room: set started flag true (guests will see)
+  $('startRoom').addEventListener('click', ()=>{
+    room.started = true;
+    localStorage.setItem(key, JSON.stringify(room));
+    alert('Jeu lancé — les joueurs peuvent maintenant répondre !');
+  });
+
+  $('resetRoom').addEventListener('click', ()=>{
+    if(!confirm('Supprimer les résultats et réinitialiser la salle ?')) return;
+    room.players = [];
+    room.started = false;
+    localStorage.setItem(key, JSON.stringify(room));
+    renderLeaderboard();
+  });
+
+  // poll for updates (simple cross-tab)
+  setInterval(renderLeaderboard, 900);
+  renderLeaderboard();
+
+  // confetti when someone reaches full score (optional)
+  setInterval(()=>{
+    room = JSON.parse(localStorage.getItem(key) || '{}');
+    if(room.players && room.players.some(p=> p.score === (room.answers?room.answers.length:0))){
+      burstConfetti();
+    }
+  }, 2000);
+
+  // confetti function
+  function burstConfetti(){
+    const c = document.getElementById('confetti');
+    if(!c) return;
+    c.classList.remove('hidden'); c.width = innerWidth; c.height = innerHeight;
+    const ctx = c.getContext('2d'); const pieces = [];
+    for(let i=0;i<120;i++) pieces.push({x:Math.random()*c.width,y:-Math.random()*c.height,vx:(Math.random()-0.5)*4,vy:Math.random()*4+2,r:Math.random()*6+3,color:['#ff4d7e','#ffd166','#06d6a0','#8ec5ff'][Math.floor(Math.random()*4)]});
+    let t=0; function frame(){ ctx.clearRect(0,0,c.width,c.height); pieces.forEach(p=>{p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; ctx.fillStyle=p.color; ctx.beginPath(); ctx.ellipse(p.x,p.y,p.r,p.r*0.6,0,0,Math.PI*2); ctx.fill();}); t++; if(t<200) requestAnimationFrame(frame); else { ctx.clearRect(0,0,c.width,c.height); c.classList.add('hidden'); } }
+    requestAnimationFrame(frame);
+  }
+</script>
+</body>
+</html>
