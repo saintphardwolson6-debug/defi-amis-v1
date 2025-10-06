@@ -3,53 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Défi-Amis v1</title>
+  <title>Défi-Amis v1 🎯</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h1>🎯 Défi-Amis v1</h1>
-    <p>Crée ton défi et découvre qui te connaît le mieux !</p>
+    <p class="desc">Teste qui connaît vraiment <b>toi</b> !</p>
 
     <div id="create-section">
-      <input type="text" id="hostName" placeholder="Ton prénom" />
-      <button id="startButton">Créer mon défi</button>
+      <input id="hostName" placeholder="Entre ton prénom" />
+      <button id="startDefi">Créer ton défi</button>
     </div>
 
-    <div id="question-section" class="hidden">
+    <div id="questions-section" class="hidden">
       <h2 id="question-text"></h2>
-      <div id="options"></div>
-      <button id="nextButton" class="hidden">Suivant</button>
+      <input id="answer-input" placeholder="Ta réponse" />
+      <button id="next-question">Suivant</button>
     </div>
 
     <div id="share-section" class="hidden">
-      <h3>Défi créé avec succès !</h3>
-      <p>Partage ce lien avec tes amis :</p>
-      <input type="text" id="shareLink" readonly />
-      <button id="copyLink">Copier le lien</button>
-      <div id="view-results" class="hidden">
-        <p>🔍 <a href="#" id="viewResultsLink">Voir les résultats publics</a></p>
+      <h2>Défi créé avec succès 🎉</h2>
+      <p>Partage ce lien à tes amis :</p>
+      <input id="share-link" readonly />
+      <div class="socials">
+        <a id="share-whatsapp" target="_blank">📱 WhatsApp</a>
+        <a id="share-facebook" target="_blank">📘 Facebook</a>
       </div>
     </div>
 
-    <div id="answer-section" class="hidden">
-      <h2 id="answer-question"></h2>
-      <div id="answer-options"></div>
-      <input type="text" id="playerName" placeholder="Ton prénom" />
-      <button id="submitAnswer" class="hidden">Soumettre</button>
+    <div id="play-section" class="hidden">
+      <h2 id="play-title"></h2>
+      <p id="play-question"></p>
+      <input id="play-answer" placeholder="Ta réponse" />
+      <button id="play-next">Suivant</button>
     </div>
 
     <div id="result-section" class="hidden">
-      <h2>Résultat</h2>
-      <div id="results"></div>
+      <h2>Résultats 🎉</h2>
+      <p id="score-text"></p>
+      <button id="create-own">Créer ton propre défi</button>
     </div>
 
-    <div id="public-results" class="hidden">
-      <h2>🏆 Résultats publics</h2>
-      <div id="players-list"></div>
+    <div id="error-section" class="hidden">
+      <h2>Défi introuvable 💔</h2>
+      <p>Le lien semble invalide ou expiré.</p>
     </div>
   </div>
 
-  <script type="module" src="app.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
