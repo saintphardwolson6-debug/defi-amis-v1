@@ -1,56 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Défi-Amis v1 🎯</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TrueFriend Test – Accueil</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>🎯 Défi-Amis v1</h1>
-    <p class="desc">Teste qui connaît vraiment <b>toi</b> !</p>
-
-    <div id="create-section">
-      <input id="hostName" placeholder="Entre ton prénom" />
-      <button id="startDefi">Créer ton défi</button>
-    </div>
-
-    <div id="questions-section" class="hidden">
-      <h2 id="question-text"></h2>
-      <input id="answer-input" placeholder="Ta réponse" />
-      <button id="next-question">Suivant</button>
-    </div>
-
-    <div id="share-section" class="hidden">
-      <h2>Défi créé avec succès 🎉</h2>
-      <p>Partage ce lien à tes amis :</p>
-      <input id="share-link" readonly />
-      <div class="socials">
-        <a id="share-whatsapp" target="_blank">📱 WhatsApp</a>
-        <a id="share-facebook" target="_blank">📘 Facebook</a>
+    <div class="card">
+      <div class="header">
+        <div class="logo">TrueFriend Test</div>
+        <div class="lead">Découvre qui te connaît vraiment !</div>
       </div>
-    </div>
 
-    <div id="play-section" class="hidden">
-      <h2 id="play-title"></h2>
-      <p id="play-question"></p>
-      <input id="play-answer" placeholder="Ta réponse" />
-      <button id="play-next">Suivant</button>
-    </div>
+      <h2>Créer un défi</h2>
+      <p class="small">Entre ton prénom ; tu répondras à 5 questions puis tu recevras un lien à partager.</p>
 
-    <div id="result-section" class="hidden">
-      <h2>Résultats 🎉</h2>
-      <p id="score-text"></p>
-      <button id="create-own">Créer ton propre défi</button>
-    </div>
+      <div class="row">
+        <input id="hostName" type="text" placeholder="Ton prénom (ex : Tchoulo)">
+        <button id="createBtn" class="btn primary">Créer mon défi</button>
+      </div>
 
-    <div id="error-section" class="hidden">
-      <h2>Défi introuvable 💔</h2>
-      <p>Le lien semble invalide ou expiré.</p>
+      <hr style="margin-top:16px;border:none;border-top:1px solid #eee">
+
+      <h3>Rejoindre un défi</h3>
+      <div class="row">
+        <input id="joinUID" type="text" placeholder="UID (ex : TCH-4F7G9)">
+        <button id="joinBtn" class="btn ghost">Rejoindre</button>
+      </div>
+
+      <p class="small muted-grey">ou ouvre directement un lien du type : <code>jeu.html?uid=…</code></p>
     </div>
   </div>
 
-  <script type="module" src="main.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
