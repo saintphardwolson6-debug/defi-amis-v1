@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TrueFriend Test – Jouer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <button onclick="location.href='index.html'" class="btn ghost">← Accueil</button>
+        <div id="roomInfo" class="lead">Chargement…</div>
+      </div>
+
+      <h2 id="roomTitle">Défi</h2>
+
+      <div id="joinArea" class="row">
+        <input id="playerName" type="text" placeholder="Ton prénom">
+        <button id="startPlayBtn" class="btn primary">Jouer</button>
+      </div>
+
+      <form id="quizForm" class="hidden"></form>
+      <div id="resultBox" class="created hidden"></div>
+
+      <h3 style="margin-top:14px">
+        Classement – Les amis de <span id="hostNameTitle"></span>
+      </h3>
+      <ol id="leaderboard" class="leaderboard"></ol>
+    </div>
+  </div>
+
+  <canvas id="confetti" class="confetti hidden"></canvas>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
