@@ -1,71 +1,55 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Défi Amis — Accueil</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Défi-Amis v1</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg">
-  <main class="card center">
-    <div class="logo">Défi<span class="accent">Amis</span></div>
-    <h1>Bienvenue — Défi entre amis</h1>
-    <p class="muted">Crée ton défi ou rejoins une salle avec un UID</p>
+<body>
+  <div class="container">
+    <h1>🎯 Défi-Amis v1</h1>
+    <p>Crée ton défi et découvre qui te connaît le mieux !</p>
 
-    <div class="row">
-      <input id="creatorName" type="text" placeholder="Ton prénom / pseudo" />
-      <button id="btnCreate" class="btn primary">Créer un défi</button>
+    <div id="create-section">
+      <input type="text" id="hostName" placeholder="Ton prénom" />
+      <button id="startButton">Créer mon défi</button>
     </div>
 
-    <hr />
-
-    <div class="row">
-      <input id="joinUID" type="text" placeholder="Entrer UID pour rejoindre une salle (ex: ABC-12345)" />
-      <button id="btnJoin" class="btn">Rejoindre</button>
+    <div id="question-section" class="hidden">
+      <h2 id="question-text"></h2>
+      <div id="options"></div>
+      <button id="nextButton" class="hidden">Suivant</button>
     </div>
 
-    <p class="small muted">Les données sont stockées localement (localStorage). Pour partager : copiez le lien après création.</p>
-    <div class="credits">Version 1.0 par Tchoulo</div>
-  </main>
+    <div id="share-section" class="hidden">
+      <h3>Défi créé avec succès !</h3>
+      <p>Partage ce lien avec tes amis :</p>
+      <input type="text" id="shareLink" readonly />
+      <button id="copyLink">Copier le lien</button>
+      <div id="view-results" class="hidden">
+        <p>🔍 <a href="#" id="viewResultsLink">Voir les résultats publics</a></p>
+      </div>
+    </div>
 
-<script>
-  // generate UID helper
-  function genUID(seed='USER'){
-    const s = (seed||'USER').toString().toUpperCase().replace(/[^A-Z0-9]+/g,'').slice(0,6) || 'USER';
-    return `${s}-${Math.random().toString(36).slice(2,7).toUpperCase()}`;
-  }
+    <div id="answer-section" class="hidden">
+      <h2 id="answer-question"></h2>
+      <div id="answer-options"></div>
+      <input type="text" id="playerName" placeholder="Ton prénom" />
+      <button id="submitAnswer" class="hidden">Soumettre</button>
+    </div>
 
-  document.getElementById('btnCreate').addEventListener('click', ()=>{
-    const name = document.getElementById('creatorName').value.trim();
-    if(!name){ alert('Entre ton prénom ou pseudo.'); return; }
-    const uid = genUID(name);
-    // init room object
-    const key = `room_${uid}`;
-    const room = {
-      host: name,
-      uid,
-      answers: [], // host answers (strings)
-      players: [], // {name,score,answers,playedAt}
-      started: false,
-      createdAt: new Date().toISOString()
-    };
-    localStorage.setItem(key, JSON.stringify(room));
-    // store last created uid
-    localStorage.setItem('lastCreatedUID', uid);
-    // go to create page
-    window.location.href = `create.html?uid=${encodeURIComponent(uid)}`;
-  });
+    <div id="result-section" class="hidden">
+      <h2>Résultat</h2>
+      <div id="results"></div>
+    </div>
 
-  document.getElementById('btnJoin').addEventListener('click', ()=>{
-    const uid = document.getElementById('joinUID').value.trim();
-    if(!uid){ alert('Entre un UID.'); return; }
-    // check room exists
-    const key = `room_${uid}`;
-    const data = localStorage.getItem(key);
-    if(!data){ alert('Salle introuvable. Vérifie l\'UID.'); return; }
-    // navigate to play
-    window.location.href = `play.html?uid=${encodeURIComponent(uid)}`;
-  });
-</script>
+    <div id="public-results" class="hidden">
+      <h2>🏆 Résultats publics</h2>
+      <div id="players-list"></div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>
