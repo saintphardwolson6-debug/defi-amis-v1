@@ -1,26 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
-
-:root {
-  --accent:#ff3b6b;
-  --muted:#666;
-  --bg:linear-gradient(135deg,#1b1f3b,#0f1122);
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif}
-body.bg{background:var(--bg);color:#111;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:20px;}
-.card{width:100%;max-width:720px;background:#fff;border-radius:14px;padding:20px;box-shadow:0 8px 25px rgba(0,0,0,0.1);}
-h2{color:#111;font-weight:700}
-.muted{color:var(--muted);margin-bottom:10px}
-input[type=text]{width:100%;padding:10px;border:1px solid #eee;border-radius:8px;margin-top:8px}
-.btn{padding:10px 14px;border:none;border-radius:10px;background:#eee;cursor:pointer;font-weight:700}
-.btn.primary{background:linear-gradient(90deg,var(--accent),#ff7aa2);color:white}
-.question{margin:10px 0}
-.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px;justify-content:center}
-.created{margin-top:20px;background:#f9fafb;padding:15px;border-radius:10px;text-align:center}
-.icon img{border-radius:50%;background:#fff;padding:4px}
-.leaderboard-box{margin-top:25px}
-.leaderboard{list-style:none;padding:0}
-.leaderboard li{background:rgba(255,59,107,0.07);margin:5px 0;padding:8px 12px;border-radius:8px}
-.fade-in{animation:fadeIn .6s ease-in}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999}
-.hidden{display:none}
+
+.container {
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+}
+
+input {
+  padding: 10px;
+  width: 80%;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #222;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #444;
+}
+
+.hidden {
+  display: none;
+}
+
+#options button, #answer-options button {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+}
