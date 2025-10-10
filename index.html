@@ -1,39 +1,29 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TrueFriend Test – Accueil</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Défi-Amis+ — Accueil</title>
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <div class="header">
-        <div class="logo">TrueFriend Test</div>
-        <div class="lead">Découvre qui te connaît vraiment !</div>
-      </div>
+  <main class="page card centre">
+    <img src="assets/img/logo.png" alt="Défi-Amis+" class="logo">
+    <h1>🎯 Défi-Amis+</h1>
+    <p class="lead">Eske yo vrèman konnen w ? Découvre-le maintenant !</p>
 
-      <h2>Créer un défi</h2>
-      <p class="small">Entre ton prénom ; tu répondras à 5 questions puis tu recevras un lien à partager.</p>
-
-      <div class="row">
-        <input id="hostName" type="text" placeholder="Ton prénom (ex : Tchoulo)">
-        <button id="createBtn" class="btn primary">Créer mon défi</button>
-      </div>
-
-      <hr style="margin-top:16px;border:none;border-top:1px solid #eee">
-
-      <h3>Rejoindre un défi</h3>
-      <div class="row">
-        <input id="joinUID" type="text" placeholder="UID (ex : TCH-4F7G9)">
-        <button id="joinBtn" class="btn ghost">Rejoindre</button>
-      </div>
-
-      <p class="small muted-grey">ou ouvre directement un lien du type : <code>jeu.html?uid=…</code></p>
+    <div class="actions">
+      <a href="jouer.html" class="btn primary">🎮 JOUER UN DÉFI</a>
+      <a href="creer-defi.html" class="btn">✍️ CRÉER UN DÉFI (VIP)</a>
+      <a href="vip.html" class="btn ghost">💎 DEVENIR VIP</a>
     </div>
-  </div>
 
-  <script type="module" src="script.js"></script>
+    <div class="links">
+      <a href="login.html" class="link">Se connecter</a> ·
+      <a href="register.html" class="link">S'inscrire</a> ·
+      <a href="classement.html" class="link">Classements</a>
+    </div>
+
+    <p class="small">Support WhatsApp : <a href="https://wa.me/50936484174" target="_blank">+509 3648 4174</a></p>
+  </main>
 </body>
 </html>
