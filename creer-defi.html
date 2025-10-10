@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Créer un défi — Défi-Amis+</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <main class="page card">
+    <h2>✍️ Créer un Défi (VIP)</h2>
+    <p class="muted">Seuls les VIP peuvent créer un défi.</p>
+    <label>Prénom de l'hôte</label>
+    <input id="hostName" placeholder="Ex: Tchoulo">
+    <label>Mode</label>
+    <select id="mode">
+      <option value="ami">Mode Amitié</option>
+      <option value="crush">Mode Crush</option>
+    </select>
+
+    <div id="questionsArea" class="card small muted"></div>
+
+    <div class="row">
+      <button id="btnCreate" class="btn primary">Créer le défi</button>
+      <button class="btn ghost" onclick="location.href='index.html'">Annuler</button>
+    </div>
+
+    <div id="created" class="created hidden"></div>
+  </main>
+
+<script type="module" src="js/create.js"></script>
+</body>
+</html>
