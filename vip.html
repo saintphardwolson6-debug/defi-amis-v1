@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Devenir VIP — Défi-Amis+</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <main class="page card centre">
+    <h2>Devenir VIP</h2>
+    <p>Montant: <strong>50 HTG</strong> via NatCash</p>
+    <p>Numéro NatCash: <strong>50955865621</strong></p>
+
+    <input id="txn" placeholder="Référence transaction (ex: TXN-12345)">
+    <div class="row">
+      <button id="btnPay" class="btn primary">J'ai payé / Demander VIP</button>
+      <button class="btn ghost" onclick="location.href='index.html'">Retour</button>
+    </div>
+    <p class="small muted">Support WhatsApp: <a href="https://wa.me/50936484174">+509 3648 4174</a></p>
+  </main>
+
+<script type="module">
+import { auth, db } from './js/firebase.js';
+import { addDoc, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+let currentUser = null;
+onAuthStateChanged(auth, u => { if(!u) window.location.href = 'login.html'; currentUser = u; });
+
+document.getElementById('btnPay').onclick = async ()=>{
+  const txn = document.getElementById('txn').value.trim();
+  if(!txn) return alert('Entrez la référence transaction.');
+  // Save request to vipRequests
+  await addDoc(collection(db,'vipRequests'), {
+    userUid: currentUser.uid,
+    name: currentUser.email || currentUser.uid,
+    txn,
+    date: new Date()
+  });
+  alert('Demande envoyée. L\\'administrateur vérifiera la transaction.');
+  window.location.href = 'index.html';
+};
+</script>
+</body>
+</html>
