@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Connexion — Défi-Amis+</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <main class="page card centre">
+    <h2>Connexion</h2>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Mot de passe">
+    <div class="row">
+      <button id="btnLogin" class="btn primary">Se connecter</button>
+      <a class="btn ghost" href="register.html">S'inscrire</a>
+    </div>
+    <p id="msg" class="small muted"></p>
+  </main>
+
+<script type="module">
+import { login } from './js/auth.js';
+document.getElementById('btnLogin').onclick = async ()=>{
+  const email = document.getElementById('email').value.trim();
+  const pwd = document.getElementById('password').value.trim();
+  if(!email||!pwd) return alert('Email et mot de passe requis');
+  const res = await login(email, pwd);
+  if(!res.ok) document.getElementById('msg').textContent = res.error;
+  else window.location.href = 'index.html';
+};
+</script>
+</body>
+</html>
